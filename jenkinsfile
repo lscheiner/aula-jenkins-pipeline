@@ -1,46 +1,61 @@
-pipeline  {
-      agent any 
-       stages {
-       
-       	stage('Cleanup') {
-		steps {
-		deleteDir()
-		}
-	}
-	 
-	    stage ('Distro Info') {
+pipeline {
+    agent any 
+    
+    
+    stages {
+
+        stage(clean) {
             steps {
-                sh 'echo "Informacoes da Distro utilizada $(hostname -i):" >> assessment.txt'
-				sh 'cat /etc/*-release >> assessment.txt'
-            }
-        }
-		
-		stage ('Kernal Info') {
-            steps {
-                sh 'echo "Informacoes do Kernel do Servidor $(hostname -i):" >> assessment.txt'
-				sh 'uname -a >> assessment.txt'	
-            }
-        }
-		
-		        stage ('User Info') {
-            steps {
-                sh 'echo "Lista de Usuarios Presente no Servidor $(hostname -i):" >> assessment.txt'
-				sh 'cat /etc/passwd | cut -d: -f1 >> assessment.txt'
-            }
-        }
-        stage ('Packages Info') {
-            steps {
-                sh 'echo "Pacotes instalados no Servidor $(hostname -i):" >> assessment.txt'
-				sh 'dpkg -l >> assessment.txt'
+                sh 'rm -rf ${workspace}/build'
             }
         }
 
-        
+        stage('arquivo criado') {
+            steps {
+                echo "criando arquivo"
+                sh "touch assessment.txt"
+            }
+        }
+
+        stage('distro') {
+            steps {
+                sh "cat /etc/*-release >> /tmp/distro.txt"
+            }
+            
+        }
+        stage('umane') {
+            steps {
+                echo "uname..."
+                sh "uname -a >> /tmp/umane.txt"
+            }
+        }
+        stage('users') {
+            steps {
+                echo 'users...'
+                sh "cat /etc/passwd | cut -d: -f1 >> /tmp/users.txt"
+
+            }
+        }
+        stage('pacotes') {
+            steps {
+                sh "echo 'pacotes...'"
+                sh "dpkg -l >> /tmp/packages.txt"
+            }
+        }
     }
     
     post {
-        always { echo "Compilação finalizada"}
-        success { echo "Sucesso"}
-        failure { echo "Falha !!!"}
+        always { echo "Eu sempre vou ser executado!"
+          sh "> assessment.txt"
+          sh "cat /tmp/distro.txt >> assessment.txt"
+          sh "cat /tmp/umane.txt >> assessment.txt"
+          sh "cat /tmp/users.txt >> assessment.txt"
+          sh "cat /tmp/packages.txt >> assessment.txt"
+
+        
+        }
+        success {  echo "comppilação finalizada com sucesso!" }
+        failure {  echo "Somentei serei executado quando finalizar com erro!"}
     }
+    
 }
