@@ -4,7 +4,7 @@ pipeline  {
        
        		stage('Cleanup') {
 
-		step([$class: 'WsCleanup', disableDeferredWipeout: true])
+			step([$class: 'WsCleanup'])
 
 		}
 	 
