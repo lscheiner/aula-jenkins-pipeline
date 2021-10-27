@@ -1,6 +1,12 @@
 pipeline  {
       agent any 
        stages {
+       
+       		stage('Cleanup') {
+
+		step([$class: 'WsCleanup', disableDeferredWipeout: true])
+
+		}
 	 
 	    stage ('Distro Info') {
             steps {
