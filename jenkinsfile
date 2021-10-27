@@ -1,7 +1,7 @@
 pipeline  {
       agent any 
        stages {
-	
+	 
 	    stage ('Distro Info') {
             steps {
                 sh 'echo "Informacoes da Distro utilizada $(hostname -i):" >> assessment.txt'
