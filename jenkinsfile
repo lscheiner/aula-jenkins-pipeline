@@ -6,6 +6,7 @@ pipeline  {
 		steps {
 		deleteDir()
 		}
+	}
 	 
 	    stage ('Distro Info') {
             steps {
