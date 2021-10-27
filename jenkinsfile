@@ -2,10 +2,9 @@ pipeline  {
       agent any 
        stages {
        
-       		stage('Cleanup') {
-
-			step([$class: 'WsCleanup'])
-
+       	stage('Cleanup') {
+		steps {
+		deleteDir()
 		}
 	 
 	    stage ('Distro Info') {
