@@ -36,6 +36,6 @@ pipeline  {
     post {
         always { echo "Compilação finalizada"}
         success { echo "Sucesso"}
-        failure { echo "Falha"}
+        failure { echo "Falha !!!"}
     }
 }
